@@ -191,9 +191,8 @@ $(document).ready(function() {
 			let video = item.querySelector('.carousel-video__video');
 
 			let btn = item.querySelector('.carousel-video__play-pause');
-			console.log(video)
+
 			videoWrap.addEventListener('mousemove', (e) => {
-				console.log('test')
 				if(!video.paused) {
 					btn.style.opacity = '1';
 					
