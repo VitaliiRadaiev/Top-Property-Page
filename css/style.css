@@ -1794,7 +1794,7 @@ textarea.input {
   border: 2px solid #fff;
   left: 24px;
   bottom: -30px;
-  background: #000 url(../../../img/common-blocks/card-preview/photo-decor.svg) center no-repeat;
+  background: #000 url(../img/common-blocks/card-preview/photo-decor.svg) center no-repeat;
   z-index: 2;
 }
 
