@@ -365,26 +365,26 @@ function forms(){
 // 	});
 // 	*/
 
-// 	//CHECK
-// 	$.each($('.check'), function(index, val) {
-// 		if($(this).find('input').prop('checked')==true){
-// 			$(this).addClass('active');
-// 		}
-// 	});
-// 	$('body').off('click','.check',function(event){});
-// 	$('body').on('click','.check',function(event){
-// 		if(!$(this).hasClass('disable')){
-// 				var target = $(event.target);
-// 			if (!target.is("a")){
-// 					$(this).toggleClass('active');
-// 				if($(this).hasClass('active')){
-// 					$(this).find('input').prop('checked', true);
-// 				}else{
-// 					$(this).find('input').prop('checked', false);
-// 				}
-// 			}
-// 		}
-// 	});
+	//CHECK
+	$.each($('.check'), function(index, val) {
+		if($(this).find('input').prop('checked')==true){
+			$(this).addClass('active');
+		}
+	});
+	$('body').off('click','.check',function(event){});
+	$('body').on('click','.check',function(event){
+		if(!$(this).hasClass('disable')){
+				var target = $(event.target);
+			if (!target.is("a")){
+					$(this).toggleClass('active');
+				if($(this).hasClass('active')){
+					$(this).find('input').prop('checked', true);
+				}else{
+					$(this).find('input').prop('checked', false);
+				}
+			}
+		}
+	});
 
 // 	//OPTION
 // 	$.each($('.option.active'), function(index, val) {
@@ -877,7 +877,7 @@ $(document).ready(function() {
 		} else {
 			video.pause();
 			btn.firstElementChild.className = 'icon-play3';
-			btn.firstElementChild.style.marginLeft = '4px';
+			btn.firstElementChild.style.marginLeft = '0.4rem';
 		}
 	}
 
@@ -915,7 +915,13 @@ $(document).ready(function() {
 					btn.style.opacity = '1';
 				}
 
-			})
+			});
+
+			video.addEventListener('ended', () => {
+				video.pause();
+				btn.firstElementChild.className = 'icon-play3';
+				btn.firstElementChild.style.marginLeft = '0.4rem';
+			});
 		})
 
 
@@ -1028,6 +1034,108 @@ $(document).ready(function() {
 			}
 		})
 	}
+};
+	//RATING
+$('.rating.edit .star').hover(function() {
+		var block=$(this).parents('.rating');
+	block.find('.rating__activeline').css({width:'0%'});
+		var ind=$(this).index()+1;
+		var linew=ind/block.find('.star').length*100;
+	setrating(block,linew);
+},function() {
+		var block=$(this).parents('.rating');
+	block.find('.star').removeClass('active');
+		var ind=block.find('input').val();
+		var linew=ind/block.find('.star').length*100;
+	setrating(block,linew);
+});
+$('.rating.edit .star').click(function(event) {
+		var block=$(this).parents('.rating');
+		var re=$(this).index()+1;
+		block.find('input').val(re);
+		var linew=re/block.find('.star').length*100;
+	setrating(block,linew);
+});
+$.each($('.rating'), function(index, val) {
+		var ind=$(this).find('input').val();
+		var linew=ind/$(this).parent().find('.star').length*100;
+	setrating($(this),linew);
+});
+function setrating(th,val) {
+	th.find('.rating__activeline').css({width:val+'%'});
+};
+	{
+	function togglePlayPause(video,btn) {
+		if(video.paused) {
+			video.play();
+			btn.firstElementChild.className = 'icon-pause2';
+			btn.firstElementChild.style.marginLeft = '0px';
+
+		} else {
+			video.pause();
+			btn.firstElementChild.className = 'icon-play3';
+			btn.firstElementChild.style.marginLeft = '0.4rem';
+		}
+	}
+
+	let cards = document.querySelectorAll('.card-video');
+	if(cards.length) {
+		let timerId;
+
+		cards.forEach((card) => {
+			let videoWrap = card.querySelector('.card-video__video-wrap');
+			let video = card.querySelector('.card-video__video');
+			let btn = card.querySelector('.card-video__play-pause');
+			let time = card.querySelector('.card-video__duration-time');
+			let btnLink = card.querySelector('.card-video__btn');
+
+			videoWrap.addEventListener('click', (e) => {
+				e.preventDefault();
+				togglePlayPause(video,btn);
+			});
+
+			video.addEventListener('ended', () => {
+				video.pause();
+				btn.firstElementChild.className = 'icon-play3';
+				btn.firstElementChild.style.marginLeft = '0.4rem';
+			});
+
+			videoWrap.addEventListener('mousemove', (e) => { 
+				if(!video.paused) {
+					btn.style.opacity = '1';
+					
+						clearTimeout(timerId);
+						timerId = setTimeout(() => {
+							btn.style.opacity = '0';
+						}, 2000);
+
+				} else {
+					btn.style.opacity = '1';
+				}
+
+			});
+
+			video.addEventListener('loadedmetadata', function() {
+				if(video.duration >= 60) {
+
+					time.innerText = (video.duration / 60).toFixed(2) + ' min';
+				} else if(video.duration < 10) {
+					time.innerText = '0.0' + Math.round(video.duration) + ' min';
+				} else if(video.duration < 60) {
+					time.innerText = '0.' + Math.round(video.duration) + ' min';
+				}
+			});
+
+			if(btnLink.dataset.background) {
+				btnLink.style.background = btnLink.dataset.background.trim();
+			}
+
+			if(btnLink.dataset.color) {
+				btnLink.style.color = btnLink.dataset.color.trim();
+			}
+		})
+	}
+
 };
 	// ==== AND COMMON BLOCKS =====================================================
 
@@ -1164,6 +1272,77 @@ $(document).ready(function() {
 }
  ;
 	// ==== AND HOME =====================================================
+	
+
+	// ==== PROFESSIONALS DETAILS =====================================================
+	;
+	{
+	let gallerySlider = document.querySelector('.gallery');
+	if(gallerySlider) {
+		$('.gallery__main-slider').slick({
+		  slidesToShow: 1,
+		  slidesToScroll: 1,
+		  prevArrow: '<div class="slick-arrow slick-prev"><span class=""><svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 19.5L11.55 18.45L5.925 12.75L21.75 12.75L21.75 11.25L5.925 11.25L11.55 5.55L10.5 4.5L3 12L10.5 19.5Z" fill="#344F6E"/></svg></span></div>',
+		  nextArrow: '<div class="slick-arrow slick-next"><span class=""><svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L12.45 5.55L18.075 11.25H2.25V12.75H18.075L12.45 18.45L13.5 19.5L21 12L13.5 4.5Z" fill="#344F6E"/></svg></span></div>',
+		  fade: true,
+		  asNavFor: '.gallery__bottom-slider',
+		  infinite: true,
+		  responsive: [
+		    {
+		      breakpoint: 768,
+		      settings: {
+		       fade: false,
+		      }
+		    }
+		  ]
+		});
+
+		$('.gallery__bottom-slider').slick({
+		  slidesToShow: 3,
+		  slidesToScroll: 1,
+		  asNavFor: '.gallery__main-slider',
+		  arrows: false,
+		  infinite: true,
+		});
+
+		document.querySelectorAll('.gallery__bottom-slider-item').forEach(item => {
+			let index = item.closest('.slick-slide').dataset.slickIndex;
+			$(item).click(() => {
+				$('.gallery__main-slider').slick('slickGoTo' , index);
+			})
+		})
+
+	}
+};
+	{
+	let reviewsBox = document.querySelectorAll('.reviews-block__box-review');
+	if(reviewsBox) {
+		const moveToMobileBOx = () => {
+			reviewsBox.forEach(item => {
+				let mobileBox = item.querySelector('.reviews-block__box-review-mobile');
+				let name = item.querySelector('.reviews-block__box-review-name');
+				let date = item.querySelector('.reviews-block__box-review-date');
+
+				mobileBox.append(name);
+				mobileBox.append(date);
+
+			});
+		}
+
+		if(document.documentElement.clientWidth < 768) {
+			moveToMobileBOx();
+		}
+
+
+		window.addEventListener('resize', () => {
+			if(document.documentElement.clientWidth < 768) {
+				moveToMobileBOx();
+			}
+		});
+	}
+};
+	;
+	// ==== AND PROFESSIONALS DETAILS =====================================================
 
 
 
