@@ -1024,7 +1024,7 @@ $(document).ready(function() {
 		}
 	}
 // === // stars handler ================================================================================;
-	{
+	function cardPreviewHandler(){
 	let cards = document.querySelectorAll('.card-preview');
 	if(cards.length) {
 		cards.forEach(item => {
@@ -1035,6 +1035,8 @@ $(document).ready(function() {
 		})
 	}
 };
+
+cardPreviewHandler();;
 	//RATING
 $('.rating.edit .star').hover(function() {
 		var block=$(this).parents('.rating');
@@ -1064,7 +1066,7 @@ $.each($('.rating'), function(index, val) {
 function setrating(th,val) {
 	th.find('.rating__activeline').css({width:val+'%'});
 };
-	{
+	function cardVideoHandler() {
 	function togglePlayPause(video,btn) {
 		if(video.paused) {
 			video.play();
@@ -1136,7 +1138,40 @@ function setrating(th,val) {
 		})
 	}
 
-};
+}
+
+cardVideoHandler();;
+	// ==== accordion =======================================================
+if ($('.accordion').length>0) {
+	$.each($('.spoller.active'), function (index, val) {
+		$(this).next().show();
+	});
+	$('body').on('click', '.spoller', function (event) {
+		if ($(this).hasClass('mob') && !isMobile.any()) {
+			return false;
+		}
+
+		if ($(this).parents('.one').length > 0) {
+			$(this).parents('.one').find('.spoller').not($(this)).removeClass('active').next().slideUp(300);
+			$(this).parents('.one').find('.spoller').not($(this)).parent().removeClass('active');
+		}
+
+		if ($(this).hasClass('closeall') && !$(this).hasClass('active')) {
+			$.each($(this).closest('.spollers').find('.spoller'), function (index, val) {
+				$(this).removeClass('active');
+				$(this).next().slideUp(300);
+			});
+		}
+		$(this).toggleClass('active').next().slideToggle(300, function (index, val) {
+			if ($(this).parent().find('.slick-slider').length > 0) {
+				$(this).parent().find('.slick-slider').slick('setPosition');
+			}
+		});
+		return false;
+	});
+}
+
+// ==== // accordion =======================================================;
 	// ==== AND COMMON BLOCKS =====================================================
 
 
@@ -1274,6 +1309,22 @@ function setrating(th,val) {
 	// ==== AND HOME =====================================================
 	
 
+	// ==== PROFESSIONALS CATEGORY =====================================================
+	{
+	let categoryList = document.querySelector('.professionals-category__content');
+	if(categoryList) {
+		let observer = new MutationObserver(() => {
+		  cardPreviewHandler();
+		});
+
+		observer.observe(categoryList, {
+		  childList: true,
+		});
+	}
+};
+	// ==== AND PROFESSIONALS CATEGORY =====================================================
+	
+
 	// ==== PROFESSIONALS DETAILS =====================================================
 	;
 	{
@@ -1343,6 +1394,139 @@ function setrating(th,val) {
 };
 	;
 	// ==== AND PROFESSIONALS DETAILS =====================================================
+	
+
+	// ==== VIDEOS =====================================================
+	{
+	let videoList = document.querySelector('.videos__list > .columns');
+	if(videoList) {
+		let observer = new MutationObserver(() => {
+		  cardVideoHandler();
+		});
+
+		observer.observe(videoList, {
+		  childList: true,
+		});
+	}
+};
+	// ==== AND VIDEOS =====================================================
+	
+
+	// ==== VIDEO DETAILS =====================================================
+	{
+	function togglePlayPause(video,btn) {
+		if(video.paused) {
+			video.play();
+			btn.firstElementChild.className = 'icon-pause2';
+			btn.firstElementChild.style.marginLeft = '0px';
+
+		} else {
+			video.pause();
+			btn.firstElementChild.className = 'icon-play3';
+			btn.firstElementChild.style.marginLeft = '0.4rem';
+		}
+	}
+
+	let video = document.querySelector('.video-details__video');
+
+	if(video) {
+		let timerId;
+		let videoWrap = document.querySelector('.video-details__hero-video-wrap');
+		let btn = document.querySelector('.video-details__play-pause');
+
+		btn.addEventListener('click', (e) => {
+			togglePlayPause(video,btn);
+		});
+
+		video.addEventListener('mousemove', (e) => { 
+			if(!video.paused) {
+				btn.style.opacity = '1';
+				video.setAttribute('controls', '');
+					clearTimeout(timerId);
+					timerId = setTimeout(() => {
+						btn.style.opacity = '0';
+						video.removeAttribute('controls');
+					}, 2000);
+
+			} else {
+				btn.style.opacity = '1';
+			}
+
+		});
+
+		video.addEventListener('ended', () => {
+			video.pause();
+			btn.firstElementChild.className = 'icon-play3';
+			btn.firstElementChild.style.marginLeft = '0.4rem';
+		});
+
+		video.addEventListener('click', () => {
+			if(video.paused) {
+				btn.firstElementChild.className = 'icon-pause2';
+				btn.firstElementChild.style.marginLeft = '0px';
+
+			} else {
+				btn.firstElementChild.className = 'icon-play3';
+				btn.firstElementChild.style.marginLeft = '0.4rem';
+			}
+		});
+
+		if(isMobile.any()) {
+			video.setAttribute('controls', '');
+		}
+	}
+};
+	// ==== AND VIDEO DETAILS =====================================================
+	
+
+	// ==== BLOG =====================================================
+	{
+	let gallerySlider = document.querySelector('.hero-gallery');
+	if(gallerySlider) {
+		$('.hero-gallery__main-slider').slick({
+		  slidesToShow: 1,
+		  slidesToScroll: 1,
+		  prevArrow: '<div class="slick-arrow slick-prev"><span class=""><svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 0V1.93411L2.56341 4.36L6 6.87143V8.72L0.359207 4.36L6 0Z" fill="white"/></svg></span></div>',
+		  nextArrow: '<div class="slick-arrow slick-next"><span class=""><svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0V1.93411L3.43659 4.36L0 6.87143V8.72L5.64079 4.36L0 0Z" fill="white"/></svg></span></div>',
+		  fade: true,
+		  asNavFor: '.hero-gallery__bottom-slider',
+		  infinite: true,
+		  responsive: [
+		    {
+		      breakpoint: 768,
+		      settings: {
+		       fade: false,
+		      }
+		    }
+		  ]
+		});
+
+		$('.hero-gallery__bottom-slider').slick({
+		  slidesToShow: 4,
+		  slidesToScroll: 1,
+		  asNavFor: '.hero-gallery__main-slider',
+		  arrows: false,
+		  infinite: true,
+		  responsive: [
+		    {
+		      breakpoint: 1024,
+		      settings: {
+		       	slidesToShow: 3,
+		      }
+		    }
+		  ]
+		});
+
+		document.querySelectorAll('.hero-gallery__bottom-slider-item').forEach(item => {
+			let index = item.closest('.slick-slide').dataset.slickIndex;
+			$(item).click(() => {
+				$('.hero-gallery__main-slider').slick('slickGoTo' , index);
+			})
+		})
+
+	}
+};
+	// ==== AND BLOG =====================================================
 
 
 
