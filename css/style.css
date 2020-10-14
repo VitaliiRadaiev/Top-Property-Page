@@ -559,6 +559,21 @@ h6 {
   border: 1px solid rgba(0, 0, 0, 0.4);
 }
 
+.error404 .container {
+  min-height: 50vh;
+}
+
+.error404 h1 {
+  font-size: 4.6rem;
+  line-height: 5.6rem;
+  margin-top: 2rem;
+}
+
+.error404 p {
+  font-size: 2rem;
+  line-height: 3rem;
+}
+
 body.compensate-for-scrollbar {
   overflow: hidden;
 }
@@ -5106,7 +5121,6 @@ textarea.input {
   width: 1.4rem;
   height: 1.4rem;
   top: 0.8rem;
-  border-radius: 1px solid #344F6E;
 }
 
 .add-reviwe-form__item .check:after {
