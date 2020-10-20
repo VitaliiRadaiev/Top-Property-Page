@@ -5391,6 +5391,7 @@ textarea.input {
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;
   position: relative;
+  width: 100%;
 }
 
 .video-gallery__video-wrap > video {
@@ -6926,9 +6927,13 @@ textarea.input {
 
   .video-gallery__column--1 {
     margin-bottom: 2rem;
-    min-height: 46.9rem;
     overflow: hidden;
     border-radius: 0.9rem;
+    display: block;
+  }
+
+  .video-gallery__video-wrap {
+    min-height: 46.9rem;
   }
 
   .video-gallery__list {
@@ -7351,7 +7356,7 @@ textarea.input {
     margin-bottom: 2rem !important;
   }
 
-  .video-gallery__column--1 {
+  .video-gallery__video-wrap {
     min-height: 36.9rem;
   }
 
@@ -7732,7 +7737,7 @@ textarea.input {
     font-size: 1rem;
   }
 
-  .video-gallery__column--1 {
+  .video-gallery__video-wrap {
     min-height: 26.9rem;
   }
 
